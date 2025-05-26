@@ -1,0 +1,41 @@
+---
+- name: Ensure grep and coreutils are present
+  package:
+    name: 
+      - grep
+      - coreutils
+    state: present
+
+- name: Set a unique temp install directory
+  set_fact:
+    mysql_temp_install_dir: "/tmp/ansible_{{ ansible_date_time.epoch }}"
+
+- name: Create temp install directory
+  file:
+    path: "{{ mysql_temp_install_dir }}"
+    state: directory
+    mode: '0755'
+  notify: clean up temp directory
+
+- name: Copy MySQL root password script to target
+  copy:
+    src: mysql_root_pw.sh
+    dest: "{{ mysql_temp_install_dir }}/{{ mysql_init_script }}"
+    mode: '0755'
+
+- name: Generate Password
+  set_fact:
+    mysql_root_password: >-
+      {{
+        lookup('password', '/dev/null length=8 chars=ascii_letters,digits,@#%&*+=') +
+        lookup('password', '/dev/null length=4 chars=ascii_uppercase') +
+        lookup('password', '/dev/null length=4 chars=ascii_lowercase') +
+        lookup('password', '/dev/null length=4 chars=digits') +
+        lookup('password', '/dev/null length=2 chars=@#%&*+=')
+      }}
+  when: mysql_random_root_password
+
+- name: Run MySQL root password script
+  shell: "{{ mysql_temp_install_dir }}/{{ mysql_init_script }}"
+  environment: 
+    MYSQL_ROOT_PASSWORD: "{{ mysql_root_password }}"

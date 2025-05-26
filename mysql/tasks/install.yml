@@ -1,8 +1,8 @@
 ---
 - name: Install MySQL 8.0
   dnf:
-    disablerepo: "{{ mysql84_repos }}"
-    enablerepo: "{{ mysql80_repos}}"
+    disablerepo: "{{ mysql_mysql84_repos }}"
+    enablerepo: "{{ mysql_mysql80_repos}}"
     name:
       - mysql-community-server
     state: latest
@@ -10,12 +10,14 @@
 
 - name: Install MySQL 8.4
   dnf:
+    disablerepo: "{{ mysql_mysql80_repos }}"
+    enablerepo: "{{ mysql_mysql84_repos}}"
     name:
       - mysql-community-server
     state: latest
   when: mysql_version == "8.4"
 
-- name: Enable and start MySQL service
+- name: start mysqld
   service:
     name: mysqld
     enabled: yes

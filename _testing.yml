@@ -1,0 +1,6 @@
+---
+- name: Running roles for testing
+  hosts: all
+  become: true
+  roles:
+    - role: mysql

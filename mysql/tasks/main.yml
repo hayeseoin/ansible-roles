@@ -1,19 +1,13 @@
 ---
 - name: Check if MySQL repo is installed
-  shell: rpm -q {{ mysql_repo }}
+  shell: rpm -q {{ mysql_rhel9_repo_name }}
   register: mysql_repo_check
   changed_when: false
   failed_when: false  # prevent failure when package not found
 
 - set_fact:
     mysql_repo_installed: >-
-      {{ 'no such file or directory' in mysql_repo_check.stdout
-      or 'is  to installed' not in mysql_repo_check.stdout }}
-
-- debug:
-    msg: >
-      Is MySQL repo installed? {{ mysql_repo_installed }}
-      raw output: {{ mysql_repo_check.stdout }}
+      {{ 'is not installed' not in mysql_repo_check.stdout }}
 
 - name: Check if MySQL is installed
   stat:
@@ -29,7 +23,7 @@
 
 - name: Install MySQL repo
   include_tasks: repo.yml
-  when: mysql_repo_installed
+  when: not mysql_repo_installed or mysql_force_reinstall_repo
 
 - name: Install MySQL
   include_tasks: install.yml

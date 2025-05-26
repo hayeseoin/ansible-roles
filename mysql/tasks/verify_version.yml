@@ -16,15 +16,3 @@
   fail:
     msg: "Downgrading MySQL is not allowed! Installed: {{ mysql_installed_major_minor }}, Requested: {{ mysql_version }}"
   when: mysql_installed_major_minor is version(mysql_version, '>')
-
-# - name: Fail if version mismatch and MySQL is already installed
-#   fail:
-#     msg: >
-#       Version conflict: Desired version is {{ mysql_version }}, but
-#       {{ mysql_installed_version }} is already installed.
-#       Downgrades are not allowed.
-#   when:
-#     - mysql_installed_version is defined
-#     - mysql_version is defined
-#     - mysql_installed_version is version(mysql_version, '!=') and
-#       mysql_installed_version is version(mysql_version, '>')

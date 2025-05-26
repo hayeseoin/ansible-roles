@@ -1,0 +1,7 @@
+mysql_version: "8.4"
+
+mysql_random_root_password: true
+mysql_root_password: "VerySecurePassw0rd!"
+
+mysql_force_reinstall_repo: false
+

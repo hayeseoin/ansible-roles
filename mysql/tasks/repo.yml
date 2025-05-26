@@ -1,0 +1,23 @@
+---
+- name: Set a unique temp install directory
+  set_fact:
+    mysql_temp_install_dir: "/tmp/ansible_{{ ansible_date_time.epoch }}"
+
+- name: Create temp install directory
+  file:
+    path: "{{ mysql_temp_install_dir }}"
+    state: directory
+    mode: '0755'
+  notify: clean up temp directory
+
+- name: Copy MySQL 8.4 repo RPM to target
+  copy:
+    src: "{{ mysql_rhel9_repo_file }}"
+    dest: "{{ mysql_temp_install_dir }}/{{ mysql_rhel9_repo_file }}"
+    mode: '0644'
+
+- name: Install MySQL 8.4 community release RPM
+  dnf:
+    disable_gpg_check: true
+    name: "{{ mysql_temp_install_dir }}/{{ mysql_rhel9_repo_file }}"
+    state: present

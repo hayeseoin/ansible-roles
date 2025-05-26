@@ -1,0 +1,4 @@
+- name: clean up temp directory
+  file:
+    path: "{{ mysql_temp_install_dir }}"
+    state: absent
