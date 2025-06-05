@@ -1,16 +1,11 @@
 ---
-- name: Resolve desired_tomcat
-  set_fact:
-    desired_tomcat: >-
-      {{
-        tomcat9_local_manifest.tomcat9
-        | selectattr('version', 'equalto', tomcat_version)
-        | list | first
-      }}
+- name: Set variable from manifest
+  include_tasks: use_internal_manifest.yml
+  when: tomcat_use_internal_manifest
       
 - name: Check if tomcat is already installed
   stat:
-    path: "{{ tomcat_install_dir }}/{{desired_tomcat.tomcat_name}}"
+    path: "{{ tomcat_install_dir }}/{{tomcat_name}}"
   register: tomcat_is_installed
 
 - name: Include Tomcat install and init tasks

@@ -29,7 +29,7 @@ echo 'tomcat_internal_manifest:' > $MANIFEST_NAME
 for i in $TOMCAT_VERSIONS
 do
   echo "  - version: \"$i\"" >> $MANIFEST_NAME
-  echo "  - version_number: \"$i\"" >> $MANIFEST_NAME
+  echo "    version_number: \"$i\"" >> $MANIFEST_NAME
   echo "    tomcat_name: \"apache-tomcat-$i\"" >> $MANIFEST_NAME
   echo "    archive_name: \"apache-tomcat-$i.tar.gz\"" >> $MANIFEST_NAME
   echo "    public_download_url: \"https://archive.apache.org/dist/tomcat/tomcat-9/v$i/bin/apache-tomcat-$i.tar.gz\"" >> $MANIFEST_NAME

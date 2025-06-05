@@ -4,3 +4,5 @@
   become: true
   roles:
       - role: mysql
+      - role: openjdk
+      - role: tomcat

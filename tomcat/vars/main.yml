@@ -1,0 +1,8 @@
+tomcat_temp_install_dir: /tmp/tomcat
+tomcat_install_dir: "/usr/share"
+tomcat_install_script: "install.sh"
+tomcat_service_file: "tomcat9.service"
+
+tomcat_group: tomcat
+tomcat_user: tomcat
+tomcat_symlink: "/usr/share/tomcat9"

@@ -1,4 +1,4 @@
-tomcat_temp_install_dir: /tmp/tomcat
+tomcat_use_internal_manifest: true
 
 tomcat_major_version: "9"
 tomcat_version: "9.0.105"
@@ -7,13 +7,8 @@ tomcat_download_url_old: "https://dlcdn.apache.org/tomcat/tomcat-{{ tomcat_major
 tomcat_service_name: "tomcat{{ tomcat_major_version }}"
 tomcat_force_reinstall: false
 
-tomcat_group: tomcat
-tomcat_user: tomcat
-
 # Install script variables
 tomcat_archive: "apache-tomcat-{{ tomcat_version }}.tar.gz"
-tomcat_install_dir: "/usr/share"
-tomcat_symlink: "/usr/share/tomcat{{ tomcat_major_version }}"
 tomcat_dir_name: "apache-tomcat-{{ tomcat_version }}"
 tomcat_service_file: "{{ tomcat_service_name }}.service"
 

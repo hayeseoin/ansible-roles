@@ -2,3 +2,8 @@
   service:
     name: "{{ tomcat_service_name }}"
     state: restarted
+
+- name: clean up temp directory
+  file:
+    path: "{{ tomcat_temp_install_dir }}"
+    state: absent

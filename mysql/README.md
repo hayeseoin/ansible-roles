@@ -39,7 +39,8 @@ None
 
 Eoin Hayes - @hayeseoin
 
----
-notes:
 
- - Need to include a way of creating new users
+> notes:
+> 
+> - Need to include a way of creating new users
+>

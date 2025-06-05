@@ -27,7 +27,7 @@
 
 - name: Download Tomcat archive
   get_url:
-    url: "{{ desired_tomcat.public_download_url }}"
+    url: "{{ tomcat_public_download_url }}"
     dest: "{{ tomcat_temp_install_dir }}"
 
 - name: Copy tomcat install assets
@@ -36,15 +36,15 @@
     dest: "{{ tomcat_temp_install_dir }}/{{ item }}"
     mode: '0644'
   with_items:
-    - install.sh
+    - "{{ tomcat_install_script }}"
     - "{{ tomcat_service_file }}"
 
 - name: Make install script executable
   file:
-    path: "{{tomcat_temp_install_dir}}/install.sh"
+    path: "{{tomcat_temp_install_dir}}/{{ tomcat_install_script }}"
     mode: '0755'
 
-- name: Remove existing Tomcat version (on force reinstall)
+- name: Remove existing Tomcat version if reinstalling same version (on force reinstall)
   file:
     path: "{{ tomcat_install_dir}}/{{ tomcat_dir_name }}"
     state: absent
@@ -56,24 +56,14 @@
     # creates: /usr/share/
     chdir: "{{ tomcat_temp_install_dir }}"
   environment:
-    TOMCAT_ARCHIVE: "{{ desired_tomcat.archive_name }}"
+    TOMCAT_ARCHIVE: "{{ tomcat_archive_name }}"
     TOMCAT_INSTALL_LOCATION: "{{ tomcat_install_dir }}"
     TOMCAT_SYS_HOME: "{{ tomcat_symlink }}"
-    TOMCAT_DIR_NAME: "{{ desired_tomcat.tomcat_name }}"
+    TOMCAT_DIR_NAME: "{{ tomcat_name }}"
     TOMCAT_SERVICE_FILE: "{{ tomcat_service_file }}"
-  notify: restart tomcat
-
-# - name: Ensure tomcat is started and enabled
-#   service:
-#     name: "{{ tomcat_service_name }}"
-#     state: restarted
-#     enabled: true
-
-- name: Clean up temp directory
-  file:
-    path: "{{ tomcat_temp_install_dir }}"
-    state: absent
-    mode: '0644'
+  notify: 
+    - restart tomcat
+    - clean up temp directory
 
 - name: Find old tomcats
   find:
@@ -87,5 +77,5 @@
     path: "{{ item.path }}"
     state: absent
   loop: "{{ tomcat_dirs.files }}"
-  when: item.path != (tomcat_install_dir + '/' + desired_tomcat.tomcat_name)
+  when: item.path != (tomcat_install_dir + '/' + tomcat_name)
   become: true
