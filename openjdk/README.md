@@ -19,6 +19,16 @@ This role orchestrates a shell script to install OpenJDK 11. It relies on a manu
 | openjdk_version   | 11.0.27           | Version of openjdk11 to install. See [`vars/manifest.yml`](vars/manifest.yml) for supported versions.                     |
 | openjdk_java_home   | "/opt/java" | The symlink location to Java Home                |
 
+## Example Playbook
+
+```yaml
+- hosts: all
+  roles:
+    - role: openjdk
+      vars:
+        mysql_version: "11.0.26"
+```
+
 ## Author
 
 Eoin Hayes - @hayeseoin
