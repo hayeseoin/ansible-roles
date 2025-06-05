@@ -3,6 +3,4 @@
   hosts: all
   become: true
   roles:
-      - role: mysql
-      - role: openjdk
-      - role: tomcat
+      - role: # some role
