@@ -3,10 +3,5 @@
   hosts: all
   become: true
   roles:
-    - role: mysql
-      vars:
-        mysql_version: "8.4"
-    - role: openjdk
-    - role: tomcat
-    - role: apache
-    - role: php
+    - role: # Some role
+    
