@@ -1,0 +1,22 @@
+---
+- name: Install apache
+  dnf:
+    name: httpd
+    state: present
+  notify: start apache
+
+- name: Install required Apache modules (RHEL-based systems)
+  dnf:
+    name: "{{ apache_install_modules }}"
+    state: present
+  notify: restart apache
+
+- name: Ensure Apache modules are enabled
+  copy:
+    dest: "/etc/httpd/conf.modules.d/00-{{ item }}.conf"
+    content: "LoadModule {{ item }}_module modules/mod_{{ item }}.so\n"
+    owner: root
+    group: root
+    mode: '0644'
+  loop: "{{ apache_enable_modules }}"
+  notify: restart apache
