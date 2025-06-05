@@ -1,0 +1,4 @@
+- name: clean up temp directory
+  file:
+    path: "{{ openjdk_temp_install_dir }}"
+    state: absent

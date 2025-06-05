@@ -1,0 +1,17 @@
+---
+- name: Set variable from manifest
+  include_tasks: use_internal_manifest.yml
+  when: openjdk_use_internal_manifest
+
+- name: Check if java is installed
+  stat:
+    path: "{{openjdk_install_dir}}/{{ openjdk_name }}/bin"
+  register: java_stat
+
+- set_fact:
+    java_installed: "{{ java_stat.stat.exists }}"
+
+- name: Include Java install tasks
+  include_tasks: install.yml
+  when: not java_installed
+

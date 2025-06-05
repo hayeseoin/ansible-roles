@@ -1,0 +1,18 @@
+- name: Load java manifest
+  include_vars: manifest.yml
+
+- name: Resolve OpenJDK manifest entry
+  set_fact:
+    _resolved_openjdk: >-
+      {{
+        openjdk_internal_manifest
+        | selectattr('version', 'equalto', openjdk_version)
+        | list
+        | first
+      }}
+
+- name: Set OpenJDK variables from manifest
+  set_fact:
+    openjdk_name: "{{ _resolved_openjdk.java_name }}"
+    openjdk_archive_name: "{{ _resolved_openjdk.archive_name }}"
+    openjdk_public_download_url: "{{ _resolved_openjdk.public_download_url }}"

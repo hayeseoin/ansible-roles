@@ -1,0 +1,2 @@
+openjdk_install_dir: /usr/lib/jvm
+openjdk_install_script: "install.sh"

@@ -1,0 +1,57 @@
+---
+- name: Ensure destination directory exists
+  file:
+    path: "{{ openjdk_install_dir }}"
+    state: directory
+    mode: '0755'
+
+- name: Set a unique temp install directory
+  set_fact:
+    openjdk_temp_install_dir: "/tmp/openjdk_ansible_{{ ansible_date_time.epoch }}"
+
+- name: Create temp install directory
+  file:
+    path: "{{ openjdk_temp_install_dir }}"
+    state: directory
+    mode: '0755'
+  notify: clean up temp directory
+
+- name: Copy JDK install script
+  copy:
+    src: "{{ openjdk_install_script }}"
+    dest: "{{ openjdk_temp_install_dir }}"
+    mode: '0755'
+
+- name: Download Java from URL
+  get_url:
+    url: "{{ openjdk_public_download_url }}"
+    dest: "{{ openjdk_temp_install_dir }}"
+
+- name: Install Java with script
+  shell: "{{ openjdk_temp_install_dir }}/{{ openjdk_install_script }}"
+  args:
+    creates: "{{ openjdk_install_dir }}/{{ openjdk_name }}"
+    chdir: "{{ openjdk_temp_install_dir }}"
+  environment:
+    OPT_JAVA: "{{ openjdk_java_home }}"
+    JDK_VERSION: "{{ openjdk_name }}"
+    JAVA_ARCHIVE: "{{ openjdk_archive_name }}"
+    JAVA_INSTALL_DIR: "{{ openjdk_install_dir }}"
+  register: openjdk_script_result
+  failed_when: openjdk_script_result.rc != 0
+
+- name: Find old javas
+  find:
+    paths: "{{ openjdk_install_dir }}"
+    patterns: "jdk-*"
+    file_type: directory
+  register: java_dirs
+
+- name: Remove old Java versions
+  file:
+    path: "{{ item.path }}"
+    state: absent
+  loop: "{{ java_dirs.files }}"
+  when: 
+    - item.path != (openjdk_install_dir + '/' + openjdk_name)
+    - item.path is match("^" + openjdk_install_dir + "/jdk-")

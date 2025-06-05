@@ -1,0 +1,15 @@
+openjdk_version: 11.0.26
+openjdk_java_home: /opt/java
+
+# Optional internal manifest used for resolving OpenJDK builds by version
+openjdk_use_internal_manifest: true
+
+# Only when openjdk_use_internal_manifest is set to false
+# Must ensure these are set manually
+openjdk_public_download_url: "https://github.com/adoptium/temurin11-binaries/releases/download/jdk-11.0.27%2B6/OpenJDK11U-jdk_x64_linux_hotspot_11.0.27_6.tar.gz"
+openjdk_name: "jdk-11.0.27+6"
+openjdk_archive_name: "OpenJDK11U-jdk_x64_linux_hotspot_11.0.27_6.tar.gz"
+
+
+
+
