@@ -4,9 +4,11 @@ A collection of reusable and modular Ansible roles for deploying common infrastr
 
 ## Available Roles
 
-| Role | Description | Documentation |
-|------|-------------|----------------|
-| mysql | Installs MySQL 8.0 or 8.4 on RHEL9-based systems | [mysql/README.md](./mysql/README.md) |
+[**`mysql`**](mysql) - Installs MySQL 8.0 or 8.4 on RHEL9-based systems
+
+[**`openjdk`**](openjdk) - Installs openjdk 11 on a RHEL9 system
+
+[**`tomcat`**](tomcat) - Installs tomcat9 on a RHEL9 based system (requires openjdk)
 
 ## Author
 
