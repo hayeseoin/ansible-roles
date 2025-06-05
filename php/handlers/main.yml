@@ -1,0 +1,5 @@
+- name: clean up temp directory
+  file:
+    path: "{{ php_temp_install_dir }}"
+    state: absent
+    mode: '0644'

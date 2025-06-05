@@ -1,2 +1,3 @@
 php_version: "7.4"
 php_restart_apache: true
+php_load_info: true

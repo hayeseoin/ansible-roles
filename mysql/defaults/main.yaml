@@ -5,3 +5,7 @@ mysql_root_password: "VerySecurePassw0rd!"
 
 mysql_force_reinstall_repo: false
 
+mysql_db_name: my_app_db
+mysql_user: app_user
+mysql_password: Password123!
+

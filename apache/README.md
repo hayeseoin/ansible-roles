@@ -21,3 +21,16 @@ Additional modules can be installed adding to the `apache_install_modules` list.
 | apache_install_modules   | ['mod_ssl']          | Ensures modules are installed. In this case mod_ssl (not default on AL2023)                     |
 | openjdk_enable_modules   | ['speling'] | Ensures additional modules are installed. Can be used to enable optional modules like `speling` which are unlikely to cause a conflict with other files in `/etc/httpd/conf.modules.d/`             |
 
+## Example Playbook
+
+```yaml
+- hosts: all
+  roles:
+    - role: mysql
+      vars:
+        php_version: "7.4"
+```
+
+## Author
+
+Eoin Hayes - @hayeseoin

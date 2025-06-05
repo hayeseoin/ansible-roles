@@ -12,17 +12,18 @@
 - name: Uninstall PHP 8 if 7.4 is requested
   shell: dnf remove -y php*
   when:
-    - php8_installed
+    - php_8_installed
     
 - name: Create temp install directory
   file:
     path: "{{ php_temp_install_dir }}"
     state: directory
     mode: '0644'
+  notify: clean up temp directory
 
 - name: Download PHP archive
   get_url:
-    url: "{{ php74_download_link }}"
+    url: "{{ php_74_public_download_url }}"
     dest: "{{ php_temp_install_dir }}"
 
 - name: Copy PHP install assets
@@ -31,28 +32,20 @@
     dest: "{{ php_temp_install_dir }}/{{ item }}"
     mode: '0644'
   with_items:
-    - install.sh
-    - php74-fpm.service
-    - php74-fpm.conf
+    - "{{ php_74_install_script }}"
+    - "{{ php_74_fpm_service_file }}"
+    - "{{ php_74_fpm_vhost }}"
 
 - name: Make install script executable
   file:
-    path: "{{php_temp_install_dir}}/install.sh"
+    path: "{{ php_temp_install_dir }}/{{ php_74_install_script }}"
     mode: '0755'
 
 - name: Install PHP 7.4 if requested
-  shell: "{{ php_temp_install_dir }}/install.sh"
+  shell: "{{ php_temp_install_dir }}/{{ php_74_install_script }}"
   args:
     creates: /usr/local/php-7.4/bin/php
     chdir: "{{ php_temp_install_dir }}"
   environment:
-    PHP_ARCHIVE: "{{ php74_archive }}"
+    PHP_ARCHIVE: "{{ php_74_archive }}"
   notify: "{{ 'restart apache' if php_restart_apache }}"
-
-
-- name: Clean up temp directory
-  file:
-    path: "{{ php_temp_install_dir }}"
-    state: absent
-    mode: '0644'
-

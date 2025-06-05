@@ -8,6 +8,7 @@ An Ansible role to install Tomcat 9 on RHEL.
 > - This role is currently a wrapper around an install script. This should be made 'ansible native'.  
 > - Need to better template the files `tomcat9.service` and `server.xml`.  
 > - Add support for external manifest, or S3 support in current manifest
+> - Should include log rotate 
 
 ## Requirements
 

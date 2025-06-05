@@ -6,14 +6,14 @@
 
 - name: Check if PHP 7 or 8
   set_fact:
-    php74_installed: "{{ php_version_output.stdout is search('PHP 7\\.') }}"
-    php8_installed: "{{ php_version_output.stdout is search('^PHP 8\\.') }}"
+    php_74_installed: "{{ php_version_output.stdout is search('PHP 7\\.') }}"
+    php_8_installed: "{{ php_version_output.stdout is search('^PHP 8\\.') }}"
 
 - name: Include PHP 7.4 tasks (may notify apache)
   include_tasks: php74.yaml
   when:
     - php_version == "7.4"
-    - not php74_installed
+    - not php_74_installed
 
 - name: Include PHP 8+ tasks (may notify apache)
   include_tasks: php8.yaml
@@ -38,7 +38,7 @@
 
 # - name: Set fact if PHP 7.x is installed
 #   set_fact:
-#     php74_installed: "{{ php_version_output.stdout is search('PHP 7\\.') }}"
+#     php_74_installed: "{{ php_version_output.stdout is search('PHP 7\\.') }}"
 
 # - name: Set fact if PHP 8.x is installed
 #   set_fact:

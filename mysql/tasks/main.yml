@@ -31,3 +31,6 @@
 - name: Set root password if first install
   include_tasks: init.yml
   when: not mysql_installed
+
+- name: Add database and users
+  include_tasks: db_and_users.yml

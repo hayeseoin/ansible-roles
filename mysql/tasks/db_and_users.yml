@@ -1,0 +1,15 @@
+- name: Create MySQL database
+  shell: |
+    sudo mysql -e "CREATE DATABASE IF NOT EXISTS \`{{ mysql_db_name }}\`;"
+
+- name: Create MySQL user if not exists
+  shell: |
+    sudo mysql -e "CREATE USER IF NOT EXISTS '{{ mysql_user }}'@'localhost' IDENTIFIED BY '{{ mysql_password }}';"
+  args:
+    executable: /bin/bash
+
+- name: Grant privileges to user on database
+  shell: |
+    sudo mysql -e "GRANT ALL PRIVILEGES ON {{ mysql_db_name }}.* TO '{{ mysql_user }}'@'localhost'; FLUSH PRIVILEGES;"
+  args:
+    executable: /bin/bash

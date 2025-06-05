@@ -4,5 +4,7 @@ php_74_install_script: "install.sh"
 php_74_uninstall_script: "uninstall.sh"
 php_74_fpm_service_file: "php74-fpm.service"
 php_74_fpm_vhost: "php74-fpm.conf"
-php_74_download_link: "https://github.com/hayeseoin/al2023-php74/raw/refs/heads/main/php-7.4.tar.gz"
+php_74_archive: "php-7.4.tar.gz"
+
+php_74_public_download_url: "https://github.com/hayeseoin/al2023-php74/raw/refs/heads/main/php-7.4.tar.gz"
 php_74_archive: "php-7.4.tar.gz"
