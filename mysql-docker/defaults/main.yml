@@ -8,8 +8,8 @@
 # mysql_app_password: "SuperSecretPassw0rd!"
 
 # Docker configuration
-docker_packages: docker
-docker_user: "ec2-user" # For use with Amazon Linux 2023
+mysql_docker_packages: docker
+mysqlk_docker_user: "ec2-user" # For use with Amazon Linux 2023
 
 # MySQL configuration
 mysql_version: "8.0"
