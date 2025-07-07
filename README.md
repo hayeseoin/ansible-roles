@@ -6,6 +6,8 @@ A collection of reusable and modular Ansible roles for deploying common infrastr
 
 [**`mysql`**](mysql) - Installs MySQL 8.0 or 8.4 on RHEL9-based systems
 
+[**`mysql-docker`**](mysql-docker) - Installs MySQL 7in a Docker container
+
 [**`openjdk`**](openjdk) - Installs openjdk 11 on a RHEL9 system
 
 [**`tomcat`**](tomcat) - Installs tomcat9 on a RHEL9 based system (requires openjdk)
