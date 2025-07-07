@@ -1,0 +1,24 @@
+---
+# Note:
+# This playbook generates and sets random passwords 
+# when mysql_root_password and mysql_app_password are unset
+
+# # Leaving mysql_root_password and mysql_app_password unset
+# mysql_root_password: "SuperSecretPassw0rd!"
+# mysql_app_password: "SuperSecretPassw0rd!"
+
+# Docker configuration
+docker_packages: docker
+docker_user: "ec2-user" # For use with Amazon Linux 2023
+
+# MySQL configuration
+mysql_version: "8.0"
+mysql_port: 3306
+mysql_container_name: "app-user"
+
+# Application user (single user)
+mysql_database: "app-database"
+mysql_app_user: "ap-db-user"
+
+# Volume for persistent data
+mysql_data_dir: "/opt/mysql/data"

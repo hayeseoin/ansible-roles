@@ -1,0 +1,75 @@
+---
+- name: Generate passwords if not defined
+  include_tasks: set_passwords.yml
+  when: 
+    - mysql_root_password is not defined or mysql_app_password is not defined
+
+- name: Install Docker packages
+  dnf:
+    name: "{{ docker_packages }}"
+    state: present
+  become: yes
+
+- name: Add user to docker group
+  user:
+    name: "{{ docker_user }}"
+    groups: docker
+    append: yes
+  become: yes
+
+- name: Reset SSH connection to pick up new group membership
+  meta: reset_connection
+
+- name: Start and enable Docker service
+  systemd:
+    name: docker
+    state: started
+    enabled: yes
+  become: yes
+
+- name: Create MySQL data directory
+  file:
+    path: "{{ mysql_data_dir }}"
+    state: directory
+    owner: "999"  # MySQL container user
+    group: "999"
+    mode: '0755'
+  become: yes
+
+- name: Create MySQL client config for passwordless access
+  copy:
+    content: |
+      [client]
+      user={{ mysql_app_user }}
+      password={{ mysql_app_password }}
+    dest: "/home/{{ docker_user }}/.my.cnf"
+    owner: "{{ docker_user }}"
+    group: "{{ docker_user }}"
+    mode: '0600'
+
+- name: Run MySQL container
+  docker_container:
+    name: "{{ mysql_container_name }}"
+    image: "mysql:{{ mysql_version }}"
+    state: started
+    restart_policy: unless-stopped
+    ports:
+      - "{{ mysql_port }}:3306"
+    volumes:
+      - "{{ mysql_data_dir }}:/var/lib/mysql"
+      - "/home/{{ docker_user }}/.my.cnf:/root/.my.cnf:ro"
+    env:
+      MYSQL_ROOT_PASSWORD: "{{ mysql_root_password }}"
+      MYSQL_DATABASE: "{{ mysql_database }}"
+      MYSQL_USER: "{{ mysql_app_user }}"
+      MYSQL_PASSWORD: "{{ mysql_app_password }}"
+  become_user: "{{ docker_user }}"
+
+- name: Create database connection alias
+  copy:
+    content: |
+      # MySQL database connection alias
+      alias db-connect="docker exec -it {{ mysql_container_name }} mysql -u {{ mysql_app_user }} {{ mysql_database }}"
+    dest: "/etc/profile.d/db-connect.sh"
+    mode: '0644'
+  become: yes
